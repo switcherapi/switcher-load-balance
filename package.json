@@ -8,7 +8,7 @@
     "email": "roger.petruki@gmail.com"
   },
   "scripts": {
-    "start": "npm run build && node ./build/index.js",
+    "start": "node ./src/index.js",
     "dev": "env-cmd -e dev nodemon ./src/index.js",
     "test": "jest --runInBand --collect-coverage",
     "test-local": "env-cmd -e test jest --runInBand --collect-coverage"
