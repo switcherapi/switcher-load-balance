@@ -13,7 +13,8 @@
 **Switcher Load Balance** is a simple load balance developed especially for supporting CI environments.
 
 Main features:
-- Auto switch off when the current node is offline.
+- Auto switch off when a node is offline.
+- Auto recover, forced or scheduled.
 - Stateful configuration, no DB in between, the only latency is the network.
 - Check node health via REST requests.
 - API Key generated automatically after deployment.
@@ -29,13 +30,19 @@ Example:
     "PORT": "3002",
     "SNODE1": "http://localhost:3000",
     "SNODE2": "https://switcher-api.herokuapp.com",
-    "CHECK_ENDPOINT": "/check"
+    "CHECK_ENDPOINT": "/check",
+    "LOGGER": "true",
+    "RECOVER_ATTEMPT_DURATION": "60",
+    "RECOVER_INTERVAL": "10"
   },
   "prod": {
     "PORT": "3002",
     "SNODE1": "http://localhost:3000",
     "SNODE2": "https://switcher-api.herokuapp.com",
-    "CHECK_ENDPOINT": "/check"
+    "CHECK_ENDPOINT": "/check",
+    "LOGGER": "true",
+    "RECOVER_ATTEMPT_DURATION": "60",
+    "RECOVER_INTERVAL": "10"
   },
   "test": {
     "PORT": "3002"

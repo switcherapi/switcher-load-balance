@@ -8,11 +8,12 @@ describe('Insertion tests', () => {
 
     beforeAll(() => {
         apiKey = generateApiKey();
-
-        // Initialize 2 nodes
+        
         process.env.SNODE1 = 'http://127.0.0.1:3001';
         process.env.SNODE2 = 'http://127.0.0.1:3002';
         process.env.CHECK_ENDPOINT = '/switcher-balance/check';
+        process.env.RECOVER_ATTEMPT_DURATION = 2;
+        process.env.RECOVER_INTERVAL = 1;
         initializeEndpoints();
     })
 
@@ -42,7 +43,7 @@ describe('Insertion tests', () => {
         expect(response.body[1].name).toEqual('SNODE2');
     });
     
-    test('should NOT return success when check health for one of those nodes', async () => {
+    test('should NOT return success when check health for one of the configured nodes', async () => {
         nock('http://127.0.0.1:3001').get(`/switcher-balance/check`).reply(200, { message: 'All good', code: 200 });
 
         const response = await request(app)
@@ -140,10 +141,13 @@ describe('Insertion tests', () => {
         await request(app).get('/check').send();
     });
 
-    test('should try access one offline configured endpoint', async () => {
+    test('should try access one offline configured endpoint', async (done) => {
         initializeEndpoints();
         nock('http://127.0.0.1:3002').get(`/check`).reply(200, { message: 'All good', code: 200 });
-        await request(app).get('/check').send();
+        await request(app).get('/check').send().then(response => {
+            expect(response.body.code).toEqual(200);
+            done();
+        });
     });
 
     test('should try access one offline configured endpoint', async () => {
@@ -168,5 +172,24 @@ describe('Insertion tests', () => {
         const response = await request(app).get('/check').send();
         expect(response.body.error).toEqual('All nodes are offline');
      });
+
+     test('should recovery one offline node', async (done) => {
+        initializeEndpoints();
+
+        // Nodes are offline
+        await request(app).get('/check').send().then(response => {
+            expect(response.body.error).toEqual('All nodes are offline');
+        });
+
+        // Retrieving one node
+        nock('http://127.0.0.1:3001').get(`/check`).reply(200, { message: 'All good', code: 200 });
+        nock('http://127.0.0.1:3001').get(`/switcher-balance/check`).reply(200, { message: 'All good', code: 200 });
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        await request(app).get('/check').send().then(response => {
+            expect(response.body.code).toEqual(200);
+            done();
+        });
+     }, 8000);
 
 });

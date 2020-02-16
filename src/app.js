@@ -2,8 +2,11 @@ const express = require('express');
 const uuidAPIKey = require('uuid-apikey');
 const request = require('request-promise');
 const cors = require('cors');
+const { scheduleRecover, forceRecover, retrieveNode, checkOfflineNodes, logger } = require('./util/index');
+let { index, endpoints, offlineNodes } = require('./controller/index');
 
 const app = express();
+
 app.use(cors());
 app.use(function (req, res, next) {
     if (req.url.indexOf('/switcher-balance') < 0) {
@@ -25,19 +28,21 @@ app.use(function (req, res, next) {
 });
 
 let uuid = '';
-let endpoints = [];
-let index = 0;
 
 function handler(req, res) {
     const currentNode = index;
+    checkOfflineNodes(offlineNodes);
+
     if (endpoints[currentNode].status) {
         req.pipe(request({ url: endpoints[currentNode].uri + req.url }, (error) => {
             if (error) {
                 endpoints[currentNode].status = false;
+                scheduleRecover(endpoints[currentNode], offlineNodes, checkNode);
                 return handler(req, res);
             }
         })).pipe(res);
     } else {
+        forceRecover(endpoints[currentNode], checkNode);
         if (!checkNodes()) {
             return res.status(500).send({ error: 'All nodes are offline' });
         }
@@ -67,7 +72,7 @@ function initializeEndpoints() {
             check_endpoint: process.env.CHECK_ENDPOINT,
             status: true
         };
-        console.log(`- Adding endpoint ${endpoint.uri}`)
+        logger(`- Adding endpoint ${endpoint.uri}`);
         endpoints.push(endpoint);
     });
 }
@@ -76,7 +81,7 @@ function generateApiKey() {
     const apikey = uuidAPIKey.create();
     uuid = apikey.uuid;
 
-    console.log('API Key: ', apikey.apiKey);
+    logger(`API Key: ${apikey.apiKey}`);
     return apikey.apiKey;
 }
 
@@ -92,8 +97,41 @@ function auth(req, res, next) {
     }
 }
 
+// Check Load Balance endpoint
 function check(res) {
-    res.status(200).send({ message: 'All good', code: 200 });
+    res.status(200).send({ 
+        message: 'All good', 
+        code: 200,
+        online: endpoints,
+        offline: offlineNodes
+    });
+}
+
+// Check Node endpoints
+async function checkNode(endpoint, result = []) {
+    try {
+        const startTime = Date.now();
+        await request({ url: endpoint.uri + endpoint.check_endpoint }, (error, response, body) => {
+            if (!error) {
+                retrieveNode(endpoint, offlineNodes);
+                result.push({
+                    name: endpoint.name,
+                    uri: endpoint.uri,
+                    status: endpoint.status,
+                    time: Date.now() - startTime,
+                    statusCode: response && response.statusCode,
+                    body: JSON.parse(body)
+                });
+            }
+        });
+    } catch (e) {
+        result.push({
+            name: endpoint.name,
+            uri: endpoint.uri,
+            status: endpoint.status,
+            error: e
+        });
+    }
 }
 
 app.get('/switcher-balance/check', (req, res) => {
@@ -108,29 +146,7 @@ app.get('/switcher-balance/checkhealth', auth, async (req, res) => {
     let result = [];
     for (let i = 0; i < endpoints.length; i++) {
         const endpoint = endpoints[i];
-        const startTime = Date.now();
-        try {
-            await request({ url: endpoint.uri + endpoint.check_endpoint }, (error, response, body) => {
-                if (!error) {
-                    result.push({
-                        name: endpoint.name,
-                        uri: endpoint.uri,
-                        status: endpoint.status,
-                        time: Date.now() - startTime,
-                        statusCode: response && response.statusCode,
-                        body: JSON.parse(body)
-                    });
-                }
-            });
-        } catch (e) {
-            result.push({
-                name: endpoint.name,
-                uri: endpoint.uri,
-                status: endpoint.status,
-                error: e
-            });
-        }
-
+        await checkNode(endpoint, result);
     }
     res.send(result);
 });

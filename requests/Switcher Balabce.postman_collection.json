@@ -6,17 +6,34 @@
 	},
 	"item": [
 		{
-			"name": "Check",
+			"name": "External Call Check",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3002/check",
+					"raw": "{{url}}/check",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "3002",
 					"path": [
+						"check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Internal Call Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/switcher-balance/check",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"switcher-balance",
 						"check"
 					]
 				}
@@ -31,7 +48,7 @@
 					"apikey": [
 						{
 							"key": "value",
-							"value": "4HZ47GB-8SA43XK-MY7851P-8A45NBF",
+							"value": "{{apiKey}}",
 							"type": "string"
 						},
 						{
@@ -44,11 +61,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3002/switcher-balance/checkhealth",
+					"raw": "{{url}}/switcher-balance/checkhealth",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "3002",
 					"path": [
 						"switcher-balance",
 						"checkhealth"
@@ -65,7 +81,7 @@
 					"apikey": [
 						{
 							"key": "value",
-							"value": "4HZ47GB-8SA43XK-MY7851P-8A45NBF",
+							"value": "{{apiKey}}",
 							"type": "string"
 						},
 						{
@@ -94,11 +110,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3002/switcher-balance/SNODE1",
+					"raw": "{{url}}/switcher-balance/SNODE1",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "3002",
 					"path": [
 						"switcher-balance",
 						"SNODE1"
@@ -115,7 +130,7 @@
 					"apikey": [
 						{
 							"key": "value",
-							"value": "F9MQTVB-J3E4QRA-QMTDTKX-GWA4JEA",
+							"value": "{{apiKey}}",
 							"type": "string"
 						},
 						{
@@ -144,11 +159,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3002/switcher-balance",
+					"raw": "{{url}}/switcher-balance",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "3002",
 					"path": [
 						"switcher-balance"
 					]
@@ -164,7 +178,7 @@
 					"apikey": [
 						{
 							"key": "value",
-							"value": "F9MQTVB-J3E4QRA-QMTDTKX-GWA4JEA",
+							"value": "{{apiKey}}",
 							"type": "string"
 						},
 						{
@@ -193,11 +207,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3002/switcher-balance/SNODE3",
+					"raw": "{{url}}/switcher-balance/SNODE3",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "3002",
 					"path": [
 						"switcher-balance",
 						"SNODE3"
