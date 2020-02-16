@@ -1,0 +1,32 @@
+language: node_js
+node_js:
+  - "10"
+
+addons:
+  sonarcloud:
+    organization: "petruki"
+    token:
+      secure: ${SONAR_TOKEN}
+
+jobs:
+  include:
+    - stage: compile
+      script:
+        - npm install
+    - stage: test
+      script:
+        - npm test
+        - sonar-scanner
+    - stage: deploy
+      script:
+        - echo "Ready to deploy..."
+      deploy:
+        provider: heroku
+        app: switcher-load-balance
+        api_key:
+          secure: ${HEROKU_KEY}
+
+stages:
+  - compile
+  - test
+  - deploy

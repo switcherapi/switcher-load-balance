@@ -1,0 +1,38 @@
+{
+  "name": "switcher-balance",
+  "version": "1.0.0",
+  "description": "Switcher Load Balance",
+  "main": "index.js",
+  "author": {
+    "name": "Rogerio Petruki",
+    "email": "roger.petruki@gmail.com"
+  },
+  "scripts": {
+    "start": "npm run build && node ./build/index.js",
+    "dev": "env-cmd -e dev nodemon ./src/index.js",
+    "test": "jest --runInBand --collect-coverage",
+    "test-local": "env-cmd -e test jest --runInBand --collect-coverage"
+  },
+  "keywords": [
+    "load",
+    "balance",
+    "switcher",
+    "api"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
+    "uuid-apikey": "^1.4.6"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.0.1",
+    "jest": "^24.9.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "nock": "^11.8.2",
+    "nodemon": "^1.19.4",
+    "supertest": "^4.0.2"
+  }
+}

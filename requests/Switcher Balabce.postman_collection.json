@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "425471bb-8eb8-4884-a20e-252a85789ba0",
+		"name": "Switcher Balabce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3002/check",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Balance - Check Health",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "4HZ47GB-8SA43XK-MY7851P-8A45NBF",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "switcher-load-key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3002/switcher-balance/checkhealth",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"switcher-balance",
+						"checkhealth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Balance - Update",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "4HZ47GB-8SA43XK-MY7851P-8A45NBF",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "switcher-load-key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3002/switcher-balance/SNODE1",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"switcher-balance",
+						"SNODE1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Balance - Create",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "F9MQTVB-J3E4QRA-QMTDTKX-GWA4JEA",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "switcher-load-key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"SNODE3\",\n\t\"uri\": \"http://localhost:3001\",\n\t\"check_health\": \"/check\",\n\t\"status\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3002/switcher-balance",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"switcher-balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Balance - Delete",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "F9MQTVB-J3E4QRA-QMTDTKX-GWA4JEA",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "switcher-load-key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3002/switcher-balance/SNODE3",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"switcher-balance",
+						"SNODE3"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
