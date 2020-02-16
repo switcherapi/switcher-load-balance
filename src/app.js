@@ -46,7 +46,7 @@ function handler(req, res) {
         req.pipe(request({ url: endpoints[index].uri + req.url })).pipe(res);
     }
     nextNode();
-};
+}
 
 function checkNodes() {
     const online = endpoints.filter(node => node.status);
@@ -80,19 +80,15 @@ function generateApiKey() {
     return apikey.apiKey;
 }
 
-function auth() {
-    return function (req, res, next) {
-        try {
-            const apikey = req.header('switcher-load-key');
+function auth(req, res, next) {
+    try {
+        const apikey = req.header('switcher-load-key');
+        if (uuidAPIKey.check(apikey, uuid))
+            return next();
             
-            if (uuidAPIKey.check(apikey, uuid)) {
-                return next();
-            }
-
-            throw new Error();
-        } catch (e) {
-            res.status(401).send({ error: 'Invalid API Key' });
-        }
+        throw new Error();
+    } catch (e) {
+        res.status(401).send({ error: 'Invalid API Key' });
     }
 }
 
@@ -108,13 +104,13 @@ app.get('/check', (req, res) => {
     check(res);
 });
 
-app.get('/switcher-balance/checkhealth', auth(uuid), async (req, res) => {
+app.get('/switcher-balance/checkhealth', auth, async (req, res) => {
     let result = [];
-    for (let index = 0; index < endpoints.length; index++) {
-        const endpoint = endpoints[index];
+    for (let i = 0; i < endpoints.length; i++) {
+        const endpoint = endpoints[i];
         const startTime = Date.now();
         try {
-            await request({ url: endpoint.uri + endpoint.check_endpoint }, function (error, response, body) {
+            await request({ url: endpoint.uri + endpoint.check_endpoint }, (error, response, body) => {
                 if (!error) {
                     result.push({
                         name: endpoint.name,
@@ -139,7 +135,7 @@ app.get('/switcher-balance/checkhealth', auth(uuid), async (req, res) => {
     res.send(result);
 });
 
-app.patch('/switcher-balance/:name', auth(uuid), (req, res) => {
+app.patch('/switcher-balance/:name', auth, (req, res) => {
     const node = endpoints.filter(endpoint => endpoint.name === req.params.name);
     
     if (!node.length) {
@@ -154,7 +150,7 @@ app.patch('/switcher-balance/:name', auth(uuid), (req, res) => {
     res.send(node[0]);
 });
 
-app.delete('/switcher-balance/:name', auth(uuid), (req, res) => {
+app.delete('/switcher-balance/:name', auth, (req, res) => {
     const node = endpoints.filter(endpoint => endpoint.name === req.params.name);
     
     if (!node.length) {
@@ -166,7 +162,7 @@ app.delete('/switcher-balance/:name', auth(uuid), (req, res) => {
     res.send(node);
 });
 
-app.post('/switcher-balance', auth(uuid), (req, res, next) => {
+app.post('/switcher-balance', auth, (req, res, next) => {
     const endpoint = {
         name: req.body.name,
         uri: req.body.uri,
@@ -174,7 +170,7 @@ app.post('/switcher-balance', auth(uuid), (req, res, next) => {
         status: req.body.status
     };
     
-    const foundExisting = endpoints.find(endpoint => endpoint.name === req.body.name);
+    const foundExisting = endpoints.find(endpt => endpt.name === req.body.name);
     if (foundExisting) {
         return res.status(400).send({ error: `${req.body.name} already exists` });
     }
