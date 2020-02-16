@@ -1,7 +1,7 @@
 {
-  "name": "switcher-balance",
+  "name": "switcher-load-balance",
   "version": "1.0.0",
-  "description": "Switcher Load Balance",
+  "description": "Switcher API - Load Balance",
   "main": "index.js",
   "author": {
     "name": "Rogerio Petruki",
@@ -34,5 +34,9 @@
     "nock": "^11.8.2",
     "nodemon": "^1.19.4",
     "supertest": "^4.0.2"
+  } ,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/petruki/switcher-load-balance"
   }
 }

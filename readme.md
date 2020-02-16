@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/petruki/switcher-balance.svg?branch=master)](https://travis-ci.com/petruki/switcher-balance)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=switcher-balance&metric=alert_status)](https://sonarcloud.io/dashboard?id=switcher-balance)
+[![Build Status](https://travis-ci.com/petruki/switcher-load-balance.svg?branch=master)](https://travis-ci.com/petruki/switcher-load-balance)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=switcher-load-balance&metric=alert_status)](https://sonarcloud.io/dashboard?id=switcher-load-balance)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ![Switcher Load Balance: Load Balancing API](https://github.com/petruki/switcherapi-assets/blob/master/logo/switcherapi_loadbalance.png)
