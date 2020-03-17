@@ -139,16 +139,24 @@ app.get('/switcher-balance/check', (req, res) => {
 });
 
 app.get('/check', (req, res) => {
-    check(res);
+    try {
+        check(res);
+    } catch (e) {
+        res.status(500).send({ error: e.message });
+    }
 });
 
 app.get('/switcher-balance/checkhealth', auth, async (req, res) => {
-    let result = [];
-    for (let i = 0; i < endpoints.length; i++) {
-        const endpoint = endpoints[i];
-        await checkNode(endpoint, result);
+    try {
+        let result = [];
+        for (let i = 0; i < endpoints.length; i++) {
+            const endpoint = endpoints[i];
+            await checkNode(endpoint, result);
+        }
+        res.send(result);
+    } catch (e) {
+        res.status(500).send({ error: e.message });
     }
-    res.send(result);
 });
 
 app.patch('/switcher-balance/:name', auth, (req, res) => {
