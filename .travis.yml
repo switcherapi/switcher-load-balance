@@ -5,8 +5,7 @@ node_js:
 addons:
   sonarcloud:
     organization: "petruki"
-    token:
-      secure: ${SONAR_TOKEN}
+    token: ${SONAR_TOKEN}
 
 jobs:
   include:
@@ -21,10 +20,10 @@ jobs:
       script:
         - echo "Ready to deploy..."
       deploy:
+        skip_cleanup: true
         provider: heroku
         app: switcher-load-balance
-        api_key:
-          secure: ${HEROKU_KEY}
+        api_key: ${HEROKU_KEY}
 
 stages:
   - compile
