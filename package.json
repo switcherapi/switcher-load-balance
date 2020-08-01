@@ -4,7 +4,7 @@
   "description": "Switcher API - Load Balance",
   "main": "index.js",
   "author": {
-    "name": "Rogerio Petruki",
+    "name": "Roger Floriano",
     "email": "switcher.project@gmail.com"
   },
   "scripts": {
@@ -38,6 +38,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/petruki/switcher-load-balance"
+    "url": "https://github.com/switcherapi/switcher-load-balance"
   }
 }
