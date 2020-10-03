@@ -2,12 +2,15 @@ const express = require('express');
 const uuidAPIKey = require('uuid-apikey');
 const request = require('request-promise');
 const cors = require('cors');
+const helmet = require('helmet');
 const { scheduleRecover, forceRecover, retrieveNode, checkOfflineNodes, logger } = require('./util/index');
 let { index, endpoints, offlineNodes } = require('./controller/index');
 
 const app = express();
 
 app.use(cors());
+app.use(helmet());
+app.disable('x-powered-by');
 app.use(function (req, res, next) {
     if (req.url.indexOf('/switcher-balance') < 0) {
         return handler(req, res);
