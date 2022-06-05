@@ -16,7 +16,7 @@ app.use(function (req, res, next) {
         return handler(req, res);
     }
 
-    var data = '';
+    let data = '';
     req.on('data', function (chunk) {
         data += chunk;
     });
@@ -137,11 +137,11 @@ async function checkNode(endpoint, result = []) {
     }
 }
 
-app.get('/switcher-balance/check', (req, res) => {
+app.get('/switcher-balance/check', (_req, res) => {
     check(res);
 });
 
-app.get('/check', (req, res) => {
+app.get('/check', (_req, res) => {
     try {
         check(res);
     } catch (e) {
@@ -149,11 +149,10 @@ app.get('/check', (req, res) => {
     }
 });
 
-app.get('/switcher-balance/checkhealth', auth, async (req, res) => {
+app.get('/switcher-balance/checkhealth', auth, async (_req, res) => {
     try {
         let result = [];
-        for (let i = 0; i < endpoints.length; i++) {
-            const endpoint = endpoints[i];
+        for (let endpoint of endpoints) {
             await checkNode(endpoint, result);
         }
         res.send(result);
@@ -189,7 +188,7 @@ app.delete('/switcher-balance/:name', auth, (req, res) => {
     res.send(node);
 });
 
-app.post('/switcher-balance', auth, (req, res, next) => {
+app.post('/switcher-balance', auth, (req, res) => {
     const endpoint = {
         name: req.body.name,
         uri: req.body.uri,
@@ -199,11 +198,11 @@ app.post('/switcher-balance', auth, (req, res, next) => {
     
     const foundExisting = endpoints.find(endpt => endpt.name === req.body.name);
     if (foundExisting) {
-        return res.status(400).send({ error: `${req.body.name} already exists` });
+        return res.status(400).send({ error: `${foundExisting.name} already exists` });
     }
 
     endpoints.push(endpoint);
-    res.send(endpoint);
+    res.send({ message: 'Endpoint added' });
 });
 
 app.get('*', handler).post('*', handler).patch('*', handler).delete('*', handler);
