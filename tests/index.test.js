@@ -69,11 +69,7 @@ describe('Insertion tests', () => {
                 status: false
             }).expect(200);
 
-        expect(response.body).toMatchObject({
-            name: 'SNODE3',
-            uri: 'http://127.0.0.1:3003',
-            status: false
-         });
+        expect(response.body).toMatchObject({ message: 'Endpoint added' });
     });
 
     test('should NOT create new node - alias already exist', async () => {
