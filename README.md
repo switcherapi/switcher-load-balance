@@ -44,7 +44,7 @@ Example:
   "dev": {
     "PORT": "3002",
     "SNODE1": "http://localhost:3000",
-    "SNODE2": "https://switcher-api.herokuapp.com",
+    "SNODE2": "https://switcherapi.com/api",
     "CHECK_ENDPOINT": "/check",
     "LOGGER": "true",
     "RECOVER_ATTEMPT_DURATION": "60",
@@ -53,7 +53,7 @@ Example:
   "prod": {
     "PORT": "3002",
     "SNODE1": "http://localhost:3000",
-    "SNODE2": "https://switcher-api.herokuapp.com",
+    "SNODE2": "https://switcherapi.com/api",
     "CHECK_ENDPOINT": "/check",
     "LOGGER": "true",
     "RECOVER_ATTEMPT_DURATION": "60",
